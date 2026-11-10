@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link di Bio Saya</title>
+    <style>
+        /* 1. LATAR BELAKANG (Gradasi Gelap Elegan) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* 2. PROFIL (Foto, Nama, Bio) */
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            color: #ffffff;
+        }
+        p.bio {
+            font-size: 15px;
+            margin-bottom: 30px;
+            color: #e5e7eb;
+        }
+
+        /* 3. TOMBOL LINK (Efek Kaca Transparan / Glassmorphism) */
+        .links a {
+            display: block;
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+            color: #ffffff; 
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            transition: all 0.3s ease;
+        }
+        .links a:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 4. ANIMASI BERGETAR (Untuk link yang di-highlight) */
+        @keyframes getar {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+        .links a.highlight {
+            animation: getar 2.5s infinite;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid #ffffff;
+        }
+        .links a.highlight:hover {
+            animation: none;
+        }
+
+        /* 5. TOMBOL SHARE BAWAH */
+        .share-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- UBAH FOTO PROFIL DI SINI -->
+        <img src="https://ui-avatars.com/api/?name=Nama+Anda&background=random&size=200" alt="Foto Profil" class="profile-img">
+        
+        <!-- UBAH NAMA DAN BIO DI SINI -->
+        <h1>Nama Anda</h1>
+        <p class="bio">Content Creator | Freelancer | Kopi Lover</p>
+        
+        <!-- Wadah Link Otomatis -->
+        <div class="links" id="link-container"></div>
+
+        <!-- Tombol Share -->
+        <button id="btn-share" class="share-btn">Bagikan Profil Ini ↗</button>
+    </div>
+
+    <!-- SISTEM DAFTAR LINK PRAKTIS -->
+    <script>
+        // === SILAKAN TAMBAH, HAPUS, ATAU EDIT LINK ANDA DI SINI ===
+        const daftarLink = [
+            { nama: "Instagram", url: "https://instagram.com/username" },
+            { nama: "TikTok", url: "https://tiktok.com/@username" },
+            // Contoh link dengan animasi getar (highlight: true)
+            { nama: "Promo Spesial! (Diskon 50%)", url: "https://toko-anda.com/promo", highlight: true },
+            { nama: "Chat WhatsApp", url: "https://wa.me/6281234567890" },
+            { nama: "Portofolio Saya", url: "https://portofolio-anda.com" }
+        ];
+
+        // === KODE OTOMATIS (TIDAK PERLU DIUBAH) ===
+        // 1. Memasukkan daftar link ke dalam HTML
+        const container = document.getElementById("link-container");
+        daftarLink.forEach(link => {
+            const tombol = document.createElement("a");
+            tombol.href = link.url;
+            tombol.target = "_blank";
+            tombol.innerText = link.nama;
+            
+            if (link.highlight === true) {
+                tombol.classList.add("highlight");
+            }
+            
+            container.appendChild(tombol);
+        });
+
+        // 2. Mengaktifkan fitur Tombol Share
+        const btnShare = document.getElementById("btn-share");
+        btnShare.addEventListener("click", async () => {
+            const dataShare = {
+                title: 'Profil Saya',
+                text: 'Halo! Lihat kumpulan link saya di sini:',
+                url: window.location.href
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(dataShare);
+                } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert("Link profil berhasil disalin!");
+                }
+            } catch (err) {
+                console.log('Share dibatalkan', err);
+            }
+        });
+    </script>
+</body>
+</html>
