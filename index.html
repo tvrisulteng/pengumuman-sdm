@@ -3,162 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link di Bio Saya</title>
+    <title>Link di Bio - Animasi & Interaktif</title>
+    <!-- FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* 1. LATAR BELAKANG (Gradasi Gelap Elegan) */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        /* 1. VARIABEL WARNA & DASAR */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-hover: rgba(255, 255, 255, 0.25);
+            --text-color: #ffffff;
+        }
+
+        body, html {
             margin: 0;
-            padding: 20px;
-            color: #ffffff;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
+        /* 2. ANIMASI BACKGROUND BERGERAK */
+        .background-anim {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3. PARTIKEL MELAYANG */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            margin: 0; padding: 0;
+        }
+        .particle {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: floatUp 25s linear infinite;
+            bottom: -150px;
+        }
+        .particle:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .particle:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .particle:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .particle:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        /* 4. KONTENER UTAMA */
         .container {
-            width: 100%;
-            max-width: 400px;
+            width: 90%;
+            max-width: 450px;
+            margin: 50px auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
-        /* 2. PROFIL (Foto, Nama, Bio) */
+        /* 5. ANIMASI MUNCUL (Staggered Entrance) */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes popIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 6. PROFIL & DENYUT CAHAYA */
         .profile-img {
-            width: 100px;
-            height: 100px;
+            width: 110px; height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 15px;
-            border: 3px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            animation: pulseGlow 2s infinite alternate;
         }
-        h1 {
-            font-size: 24px;
-            margin: 0 0 5px 0;
-            color: #ffffff;
-        }
-        p.bio {
-            font-size: 15px;
-            margin-bottom: 30px;
-            color: #e5e7eb;
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255,255,255,0.2); transform: scale(1); }
+            100% { box-shadow: 0 0 25px rgba(255,255,255,0.6); transform: scale(1.02); }
         }
 
-        /* 3. TOMBOL LINK (Efek Kaca Transparan / Glassmorphism) */
+        h1 { margin: 15px 0 5px; font-weight: 700; letter-spacing: 1px; }
+        p.bio { margin-bottom: 35px; font-size: 15px; opacity: 0.9; }
+
+        /* 7. TOMBOL LINK INTERAKTIF */
         .links a {
-            display: block;
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px); 
-            color: #ffffff; 
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--text-color);
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
         .links a:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px) scale(1.03);
+            background: var(--glass-hover);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
         }
+        .links a i { font-size: 20px; }
 
-        /* 4. ANIMASI BERGETAR (Untuk link yang di-highlight) */
-        @keyframes getar {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
-            20%, 40%, 60%, 80% { transform: translateX(3px); }
-        }
+        /* 8. EFEK GETAR UNTUK HIGHLIGHT */
         .links a.highlight {
-            animation: getar 2.5s infinite;
-            background: rgba(255, 255, 255, 0.35);
-            border: 1px solid #ffffff;
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            animation: ringRing 3s infinite;
         }
-        .links a.highlight:hover {
-            animation: none;
+        @keyframes ringRing {
+            0%, 100% { transform: rotate(0); }
+            5%, 15%, 25% { transform: rotate(-3deg) scale(1.02); }
+            10%, 20%, 30% { transform: rotate(3deg) scale(1.02); }
+            35% { transform: rotate(0) scale(1); }
         }
+        .links a.highlight:hover { animation: none; }
 
-        /* 5. TOMBOL SHARE BAWAH */
+        /* 9. TOMBOL SHARE */
         .share-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 20px;
+            background: transparent;
+            color: var(--text-color);
+            border: 1px dashed rgba(255, 255, 255, 0.5);
+            padding: 12px 25px;
+            border-radius: 30px;
             font-size: 14px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 30px;
             transition: all 0.3s ease;
         }
         .share-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--glass-bg);
+            border-style: solid;
         }
     </style>
 </head>
 <body>
+    <!-- Background Animasi & Partikel -->
+    <div class="background-anim"></div>
+    <ul class="particles">
+        <li class="particle"></li><li class="particle"></li>
+        <li class="particle"></li><li class="particle"></li>
+        <li class="particle"></li><li class="particle"></li>
+    </ul>
+
     <div class="container">
-        <!-- UBAH FOTO PROFIL DI SINI -->
-        <img src="https://ui-avatars.com/api/?name=Nama+Anda&background=random&size=200" alt="Foto Profil" class="profile-img">
+        <!-- Profil (Animasi delay 0 detik) -->
+        <div class="animate-in" style="animation-delay: 0.1s;">
+            <!-- GANTI FOTO DI SINI -->
+            <img src="https://ui-avatars.com/api/?name=Nama+Anda&background=random&size=200" alt="Profil" class="profile-img">
+            <!-- GANTI NAMA & BIO DI SINI -->
+            <h1>Nama Anda</h1>
+            <p class="bio">Web Developer | Tech Enthusiast | Creator</p>
+        </div>
         
-        <!-- UBAH NAMA DAN BIO DI SINI -->
-        <h1>Nama Anda</h1>
-        <p class="bio">Content Creator | Freelancer | Kopi Lover</p>
-        
-        <!-- Wadah Link Otomatis -->
+        <!-- Wadah Link -->
         <div class="links" id="link-container"></div>
 
         <!-- Tombol Share -->
-        <button id="btn-share" class="share-btn">Bagikan Profil Ini ↗</button>
+        <div class="animate-in" style="animation-delay: 1s;">
+            <button id="btn-share" class="share-btn"><i class="fas fa-share-nodes"></i> Bagikan Profil</button>
+        </div>
     </div>
 
-    <!-- SISTEM DAFTAR LINK PRAKTIS -->
     <script>
-        // === SILAKAN TAMBAH, HAPUS, ATAU EDIT LINK ANDA DI SINI ===
+        // === 1. MESIN EFEK SUARA (Sangat Ringan, 0 Bytes) ===
+        function mainkanSuaraKlik() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return; 
+            
+            const ctx = new AudioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(800, ctx.currentTime); 
+            oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1); 
+
+            gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            oscillator.start();
+            oscillator.stop(ctx.currentTime + 0.1);
+        }
+
+        // === 2. DAFTAR LINK ANDA ===
         const daftarLink = [
-            { nama: "Instagram", url: "https://instagram.com/username" },
-            { nama: "TikTok", url: "https://tiktok.com/@username" },
-            // Contoh link dengan animasi getar (highlight: true)
-            { nama: "Promo Spesial! (Diskon 50%)", url: "https://toko-anda.com/promo", highlight: true },
+            { nama: "Instagram", ikon: "fab fa-instagram", url: "https://instagram.com/username" },
+            { nama: "TikTok", ikon: "fab fa-tiktok", url: "https://tiktok.com/@username" },
+            { nama: "Tonton Video Terbaru!", ikon: "fab fa-youtube", url: "https://youtube.com/...", highlight: true },
+            { nama: "Konsultasi WhatsApp", ikon: "fab fa-whatsapp", url: "https://wa.me/6281234567890" },
+            { nama: "Kunjungi Portofolio", ikon: "fas fa-globe", url: "https://portofolio-anda.com" }
         ];
 
-        // === KODE OTOMATIS (TIDAK PERLU DIUBAH) ===
-        // 1. Memasukkan daftar link ke dalam HTML
+        // === 3. RENDER LINK OTOMATIS ===
         const container = document.getElementById("link-container");
-        daftarLink.forEach(link => {
+        
+        daftarLink.forEach((link, index) => {
             const tombol = document.createElement("a");
             tombol.href = link.url;
             tombol.target = "_blank";
-            tombol.innerText = link.nama;
             
-            if (link.highlight === true) {
+            tombol.classList.add("animate-in");
+            tombol.style.animationDelay = `${0.3 + (index * 0.15)}s`;
+            
+            if (link.highlight) {
                 tombol.classList.add("highlight");
             }
             
+            tombol.innerHTML = `<i class="${link.ikon}"></i> ${link.nama}`;
+            
+            // Pemicu suara saat tombol diklik
+            tombol.addEventListener("click", () => {
+                mainkanSuaraKlik();
+            });
+
             container.appendChild(tombol);
         });
 
-        // 2. Mengaktifkan fitur Tombol Share
+        // === 4. FITUR SHARE NATIVE ===
         const btnShare = document.getElementById("btn-share");
         btnShare.addEventListener("click", async () => {
+            // Pemicu suara saat tombol share diklik
+            mainkanSuaraKlik();
+
             const dataShare = {
-                title: 'Profil Saya',
-                text: 'Halo! Lihat kumpulan link saya di sini:',
+                title: 'Kumpulan Link Profil Saya',
+                text: 'Halo! Kunjungi link interaktif saya di sini:',
                 url: window.location.href
             };
-
             try {
                 if (navigator.share) {
                     await navigator.share(dataShare);
                 } else {
                     await navigator.clipboard.writeText(window.location.href);
-                    alert("Link profil berhasil disalin!");
+                    alert("Link berhasil disalin!");
                 }
             } catch (err) {
-                console.log('Share dibatalkan', err);
+                console.log('Share dibatalkan');
             }
         });
     </script>
